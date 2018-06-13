@@ -42,7 +42,7 @@ function blockTemplate(data) {
                 $('<td>')
                 .append(
                     $('<img>')
-                    .attr('src', 'http://localhost:8080/img/block/default.jpg')
+                    .attr('src', item.icon)
                     .attr('class', 'tpl-table-line-img')
                 ),
                 $('<td>')
@@ -82,6 +82,7 @@ function blockTemplate(data) {
 }
 
 function addPage() {
+    sessionStorage.editId = -1;
     window.location.href = './block-add.html';
 }
 

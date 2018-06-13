@@ -1600,6 +1600,7 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
 
 .theme-black .tpl-table-line-img {
   max-width: 100px;
+  max-height: 100px;
   padding: 2px;
   border: none;
 }

@@ -4,7 +4,7 @@ var id;
 window.onload = function () {
   id = sessionStorage.editId;
   console.log(id);
-  if (id != null) {
+  if (id != -1) {
     ajaxBlock(id);
     $("#commit").attr("onclick", "putBlock()");
   }

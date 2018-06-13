@@ -96,6 +96,7 @@ function addCategory() {
 }
 
 function addPage() {
+  sessionStorage.editId = null;
   window.location.href = './category-add.html';
 }
 
