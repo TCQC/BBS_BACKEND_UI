@@ -1,5 +1,5 @@
 window.onload = function () {
-    var user = JSON.parse(sessionStorage.getItem("user"));
+    var user = JSON.parse(sessionStorage.getItem('user'));
     userTemplate();
     ajaxBlock();
 }
@@ -8,20 +8,21 @@ window.onload = function () {
 function userTemplate() {
     var login = sessionStorage.isLogin;
     if (!login) {
-        window.location.href = "./login.html";
+        window.location.href = './login.html';
     }
-    var user = JSON.parse(sessionStorage.getItem("user"));
+    var user = JSON.parse(sessionStorage.getItem('user'));
     document.getElementById('nickname').textContent = user.nickname;
     document.getElementById('nickname2').textContent = user.nickname;
-    $('#avatar').attr('src', user.avatar)
+    $('#avatar').attr('src', user.avatar);
 }
 
-function ajaxBlock() {
+function
+ajaxBlock() {
     $.ajax({
-        url: "http://localhost:8080/admin/block",
-        dataType: "json",
+        url: 'http://localhost:8080/admin/block',
+        dataType: 'json',
         async: true,
-        type: "GET",
+        type: 'GET',
         success: function (result) {
             console.log(result.data);
             blockTemplate(result.data);
@@ -33,21 +34,16 @@ function ajaxBlock() {
 }
 
 function blockTemplate(data) {
-    $("#datas").html('');
+    $('#datas').html('');
     $.each(data, function (index, item) {
-        $("#datas").append(
+        $('#datas').append(
             $('<tr>')
             .attr('class', 'gradeX')
             .append(
-                $('<td>')
-                .append(
-                    $('<img>')
+                $('<td>').append($('<img>')
                     .attr('src', item.icon)
-                    .attr('class', 'tpl-table-line-img')
-                ),
-                $('<td>')
-                .attr('class', 'am-text-middle')
-                .append(item.name),
+                    .attr('class', 'tpl-table-line-img')),
+                $('<td>').attr('class', 'am-text-middle').append(item.name),
                 $('<td>')
                 .attr('class', 'am-text-middle')
                 .append(item.description),
@@ -59,24 +55,20 @@ function blockTemplate(data) {
                     .append(
                         $('<a>')
                         .attr('onclick', 'edit(' + item.id + ')')
-                        .append(
-                            $('<i>')
+                        .append($('<i>')
                             .attr('class', 'am-icon-pencil')
-                            .append('编辑')
-                        ),
+                            .append('编辑')),
                         $('<a>')
                         .attr('href', '')
                         .attr('class', 'tpl-table-black-operation-del')
                         .attr('onclick', 'del(' + item.id + ')')
-                        .append(
-                            $('<i>')
+                        .append($('<i>')
                             .attr('class', 'am-icon-trash')
                             .append('删除')
                         )
                     )
                 )
-            ),
-
+            )
         )
     });
 }
@@ -89,10 +81,10 @@ function addPage() {
 function del(id) {
     console.log(id);
     $.ajax({
-        url: "http://localhost:8080/admin/block/id/" + id,
+        url: 'http://localhost:8080/admin/block/id/' + id,
         type: 'DELETE',
         async: true,
-        data: "json",
+        data: 'json',
         success: function (result) {
             console.log(result);
             ajaxBlock();
@@ -105,7 +97,7 @@ function del(id) {
 
 function edit(id) {
     sessionStorage.editId = id;
-    window.location.href = "./block-add.html";
+    window.location.href = './block-add.html';
 }
 
 function logout() {

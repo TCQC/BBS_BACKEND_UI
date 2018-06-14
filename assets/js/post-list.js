@@ -1,9 +1,9 @@
 var curPage = 1;
 window.onload =
-    function() {
-  refreshPage(curPage);
-  userTemplate();
-}
+  function () {
+    refreshPage(curPage);
+    userTemplate();
+  }
 
 function
 userTemplate() {
@@ -29,11 +29,11 @@ function ajaxPosts(page) {
     type: 'GET',
     async: true,
     data: 'json',
-    success: function(result) {
+    success: function (result) {
       console.log(result.data);
       postTemplate(result.data);
     },
-    error: function(xhr) {
+    error: function (xhr) {
       alert(xhr);
     }
   })
@@ -46,11 +46,11 @@ function ajaxPage(page) {
     type: 'GET',
     async: true,
     data: 'json',
-    success: function(result) {
+    success: function (result) {
       console.log(result.data);
       pageTemplate(result.data, page);
     },
-    error: function(xhr) {
+    error: function (xhr) {
       alert(xhr);
     }
   })
@@ -62,32 +62,82 @@ function ajaxPage(page) {
 function postTemplate(data) {
   var userlist = data;
   $('#users').html('')
-  var c = '';
-  var f = '';
-  var t = '恢复';
-  $.each(userlist, function(index, item) {
+  var s0, s1, s2, s3, s4;
+  $.each(userlist, function (index, item) {
     if (item.status == 0) {
-      c = '';
-      f = 'rec(' + item.id + ')';
-      t = '恢复';
-    } else {
-      c = 'tpl-table-black-operation-del';
-      f = 'del(' + item.id + ')';
-      t = '删除';
+      s0 = true;
+      s1 = false;
+      s2 = false;
+      s3 = false;
+      s4 = false;
+    } else if (item.status == 1) {
+      s0 = false;
+      s1 = true;
+      s2 = false;
+      s3 = false;
+      s4 = false;
+    } else if (item.status == 2) {
+      s0 = false;
+      s1 = false;
+      s2 = true;
+      s3 = false;
+      s4 = false;
+    } else if (item.status == 3) {
+      s0 = false;
+      s1 = false;
+      s2 = false;
+      s3 = true;
+      s4 = false;
+    } else if (item.status == 4) {
+      s0 = false;
+      s1 = false;
+      s2 = false;
+      s3 = false;
+      s4 = true;
     }
-    $('#users').append($('<tr>').append(
-        $('<td>').append(item.id), $('<td>').append(item.title),
-        $('<td>').append(item.content), $('<td>').append(item.user_id),
-        $('<td>').append(item.create_time), $('<td>').append(item.update_time),
-        $('<td>').append($('<div>')
-                             .attr('class', 'tpl-table-black-operation')
-                             .append($('<a>')
-                                         .attr('class', c)
-                                         .attr('onclick', f)
-                                         .append($('<i>').append(t))
 
-                                         ))))
-  });
+    $('#users').append($('<tr>').append(
+      $('<td>').append(item.id), $('<td>').append(item.title),
+      $('<td>').append(item.content), $('<td>').append(item.user_id),
+      $('<td>').append(item.create_time), $('<td>').append(item.update_time),
+      $('<td>').append($('<select>')
+        .attr('id', item.id)
+        .attr('class', 'status')
+        .attr('data-am-selected', '{searchBox: 1}')
+        .attr('value', item.status)
+        // .attr('style', 'display: none')
+        .append(
+          $('<option>')
+          .attr('value', '0')
+          .attr('selected', s0)
+          .append('隐藏'),
+          $('<option>')
+          .attr('value', '1')
+          .attr('selected', s1)
+          .append('普通'),
+          $('<option>')
+          .attr('value', '2')
+          .attr('selected', s2)
+          .append('加精'),
+          $('<option>')
+          .attr('value', '3')
+          .attr('selected', s3)
+          .append('置顶'),
+          $('<option>')
+          .attr('value', '4')
+          .attr('selected', s4)
+          .append('置顶并加精')))))
+  })
+  $.each($('.status'), function (index, item) {
+    var id = '#' + item.id;
+
+    $(id).change(function () {
+      console.log(item.id);
+      console.log($(id).val());
+      changeStatus(item.id, $(id).val());
+    })
+  })
+  // onchange函数
 }
 
 /**
@@ -103,43 +153,29 @@ function pageTemplate(data, index) {
   for (var i = 1; i <= pages; i++) {
     if (index == i) {
       $('#page').append($('<li>')
-                            .attr('class', 'am-active')
-                            .append($('<a>').attr('href', '#').append(i)))
+        .attr('class', 'am-active')
+        .append($('<a>').attr('href', '#').append(i)))
     } else {
       $('#page').append(
-          $('<li>')
-              .attr('onclick', 'refreshPage(' + i + ')')
-              .attr('class', 'am-disabled')
-              .append($('<a>').attr('id', i).attr('href', '#').append(i)))
+        $('<li>')
+        .attr('onclick', 'refreshPage(' + i + ')')
+        .attr('class', 'am-disabled')
+        .append($('<a>').attr('id', i).attr('href', '#').append(i)))
     }
   }
 }
 
-function del(id) {
+function changeStatus(id, status) {
   $.ajax({
-    url: 'http://localhost:8080/admin/post/id/' + id + '/status/0',
+    url: 'http://localhost:8080/admin/post/id/' + id + '/status/' + status,
     type: 'PUT',
     async: true,
     data: 'json',
-    success: function(result) {
-      refreshPage(curPage);
+    success: function (result) {
+      // refreshPage(curPage);
+      // alert('修改状态成功');
     },
-    error: function(xhr) {
-      alert(xhr);
-    }
-  })
-}
-
-function rec(id) {
-  $.ajax({
-    url: 'http://localhost:8080/admin/post/id/' + id + '/status/1',
-    type: 'PUT',
-    async: true,
-    data: 'json',
-    success: function(result) {
-      refreshPage(curPage);
-    },
-    error: function(xhr) {
+    error: function (xhr) {
       alert(xhr);
     }
   })

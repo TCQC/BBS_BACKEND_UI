@@ -1,45 +1,46 @@
 var icon = '';
 var adminId = '';
 var id;
-window.onload = function () {
+window.onload =
+    function() {
   id = sessionStorage.editId;
   console.log(id);
   if (id != -1) {
     ajaxBlock(id);
-    $("#commit").attr("onclick", "putBlock()");
+    $('#commit').attr('onclick', 'putBlock()');
   }
 }
 
-function ajaxBlock(id) {
-  $.ajax({
-    url: 'http://localhost:8080/block/id/' + id,
-    dataType: 'json',
-    async: true,
-    type: 'GET',
-    success: function (result) {
-      console.log(result);
-      if (result.status) {
-        adminId = result.data.adminUserId;
-        icon = result.data.icon;
-        $('#name').val(result.data.name);
-        $('#preview').attr('src', result.data.icon);
-        $('#description').val(result.data.description);
-        $('#tips').html('版主ID: ' + result.data.adminUserId);
-      }
-    },
-    error: function (xhr) {
-      alert(xhr.status);
+    function ajaxBlock(id) {
+      $.ajax({
+        url: 'http://localhost:8080/block/id/' + id,
+        dataType: 'json',
+        async: true,
+        type: 'GET',
+        success: function(result) {
+          console.log(result);
+          if (result.status) {
+            adminId = result.data.adminUserId;
+            icon = result.data.icon;
+            $('#name').val(result.data.name);
+            $('#preview').attr('src', result.data.icon);
+            $('#description').val(result.data.description);
+            $('#tips').html('版主ID: ' + result.data.adminUserId);
+          }
+        },
+        error: function(xhr) {
+          alert(xhr.status);
+        }
+      })
     }
-  })
-}
 
-$(document)
-  .ready(function () {
-    $('#input-icon').change(function () {
-      var file = (document.getElementById('input-icon').files[0]);
-      upload(file);
-    })
-  });
+    $(document)
+        .ready(function() {
+          $('#input-icon').change(function() {
+            var file = (document.getElementById('input-icon').files[0]);
+            upload(file);
+          })
+        });
 
 
 function addBlock() {
@@ -56,12 +57,12 @@ function addBlock() {
       'description': description,
       'adminId': adminId
     },
-    success: function (result) {
+    success: function(result) {
       console.log(result.data);
       icon = result.data;
       window.location.href = './block-list.html';
     },
-    error: function (xhr) {
+    error: function(xhr) {
       alert(xhr.status);
     }
   })
@@ -82,11 +83,11 @@ function putBlock() {
       'description': description,
       'adminId': adminId
     },
-    success: function (result) {
+    success: function(result) {
       console.log(result.data);
       window.location.href = './block-list.html';
     },
-    error: function (xhr) {
+    error: function(xhr) {
       alert(xhr.status);
     }
   })
@@ -106,11 +107,11 @@ function upload(file) {
     contentType: false,
     type: 'POST',
     data: form,
-    success: function (result) {
+    success: function(result) {
       console.log(result.data);
       icon = result.data;
     },
-    error: function (xhr) {
+    error: function(xhr) {
       alert(xhr.status);
     }
   })
@@ -119,11 +120,11 @@ function upload(file) {
 function getObjectURL(file) {
   var url = null;
   // 下面函数执行的效果是一样的，只是需要针对不同的浏览器执行不同的 js 函数而已
-  if (window.createObjectURL != undefined) { // basic
+  if (window.createObjectURL != undefined) {  // basic
     url = window.createObjectURL(file);
-  } else if (window.URL != undefined) { // mozilla(firefox)
+  } else if (window.URL != undefined) {  // mozilla(firefox)
     url = window.URL.createObjectURL(file);
-  } else if (window.webkitURL != undefined) { // webkit or chrome
+  } else if (window.webkitURL != undefined) {  // webkit or chrome
     url = window.webkitURL.createObjectURL(file);
   }
   return url;
@@ -140,7 +141,7 @@ function search(nickname) {
     type: 'GET',
     async: true,
     data: 'json',
-    success: function (result) {
+    success: function(result) {
       console.log(result);
       var data = result.data;
       if (!result.status) {
@@ -151,7 +152,7 @@ function search(nickname) {
         adminId = data[0].id;
       }
     },
-    error: function (xhr) {
+    error: function(xhr) {
       alert(xhr);
     }
   })
