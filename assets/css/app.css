@@ -1,3 +1,7 @@
+th {
+  max-width: 450px;
+}
+
 ul,
 li {
   list-style: none;

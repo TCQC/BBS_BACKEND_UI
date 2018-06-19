@@ -98,7 +98,7 @@ function postTemplate(data) {
 
     $('#users').append($('<tr>').append(
       $('<td>').append(item.id), $('<td>').append(item.title),
-      $('<td>').append(item.content), $('<td>').append(item.user_id),
+      $('<td>').attr('style', 'max-width:450px').append(item.content), $('<td>').append(item.user_id),
       $('<td>').append(item.create_time), $('<td>').append(item.update_time),
       $('<td>').append($('<select>')
         .attr('id', item.id)
